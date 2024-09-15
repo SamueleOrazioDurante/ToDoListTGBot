@@ -1,0 +1,11 @@
+15/09/2024
+    - Project Init
+    Main features:
+        - /patchnotes commands to see this
+        - users can create lists and todos task 
+        - all commands/messages will be logged in the logs/ folder and on pythons's console
+    
+    TO-DOS:
+        -docker-compose integration
+        -provide a way to let users create a list inside another list (For example: University[list1] ->(contains) Math[list2] ->(contains) Task1,Task2,Task3)
+        -pin list

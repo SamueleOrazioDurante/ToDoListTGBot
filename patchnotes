@@ -9,3 +9,5 @@
         -docker-compose integration
         -provide a way to let users create a list inside another list (For example: University[list1] ->(contains) Math[list2] ->(contains) Task1,Task2,Task3)
         -pin list
+        - shared lists
+        - print entire list to message (OR PDF???)

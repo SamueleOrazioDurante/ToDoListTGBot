@@ -13,7 +13,10 @@ BOT_TOKEN = tokenManager.read_bot_token()
 bot = telebot.TeleBot(BOT_TOKEN) # instance bot
 database.init()
 
+# method used in callback
 def see_specific_list(chat_id,list_id):
+
+
 
     if(list_id == "-1"): # no list has list_id of -1 (so we need to print main lists)
 
@@ -39,6 +42,7 @@ def see_specific_list(chat_id,list_id):
 
         bot.send_message(chat_id, row[0], reply_markup=markup)
 
+# method used in callback
 def see_all_lists(chat_id):
     lists = database.get_list(chat_id) # get lists name from db
 
@@ -52,6 +56,7 @@ def see_all_lists(chat_id):
 
     bot.send_message(chat_id, "Seleziona la lista:", reply_markup=markup)
 
+# method used in callback
 def create_new_todo(message,question,master_id):
 
     todo_name = message.text
@@ -68,6 +73,9 @@ def create_new_todo(message,question,master_id):
     time.sleep(5) # wait 5 seconds before deleting confirm
     bot.delete_message(message.chat.id,confirm.id) # delete confirmation
 
+
+
+    # /patchnotes
 @bot.message_handler(commands=['patchnotes', 'Ottiene le ultime patch notes'])
 def get_patchnotes(message):
 
@@ -76,6 +84,8 @@ def get_patchnotes(message):
     f = open("patchnotes", "r") # reads and return entire file
     bot.send_message(message.chat.id, f.read())
 
+
+    # /new_list
 @bot.message_handler(commands=['new_list', 'Crea una nuova lista'])
 def new_list(message):
 
@@ -103,6 +113,8 @@ def create_new_list(message,question,master_id):
     time.sleep(5) # wait 5 seconds before deleting confirm
     bot.delete_message(message.chat.id,confirm.id) # delete confirmation
 
+
+    # /my_list
 @bot.message_handler(commands=['my_list', 'Visualizza tutte le proprie liste'])
 
 def see_list(message):
@@ -113,6 +125,8 @@ def see_list(message):
 
     see_all_lists(message.chat.id)
     
+
+ # CALLBACK
 @bot.callback_query_handler(func=lambda call: True)
 def callback_data(call):
     
@@ -150,6 +164,7 @@ def callback_data(call):
 
         bot.register_next_step_handler(call.message,create_new_todo,question,master_id)
 
+    # open a specific list
     elif call.data[:4] == "list":
         
         id_list = call.data[4:]
@@ -158,6 +173,7 @@ def callback_data(call):
 
         see_specific_list(call.message.chat.id,id_list)
 
+    # open a specific todo
     elif call.data[:4] == "todo":
         
         id_todo = call.data[4:]
@@ -168,6 +184,8 @@ def callback_data(call):
     
     else:
         bot.send_message(call.message.chat.id,"Ciao daddy")
+    
+    logger.callback(call.message,call.data)
 
 
 logger.toConsole("---------------------------------------------------")

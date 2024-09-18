@@ -18,5 +18,8 @@ def error(text,message,isError): # get all errors
 def command(message): # get all commands
      log("Comando eseguito!",message)
 
+def callback(message,data):
+    log("Callback richiamato: "+data,message)
+
 def toFile(text): # write to a log file
     fileLogger.write(text)

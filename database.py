@@ -9,7 +9,7 @@ def init(): # initialize sqlite database
     cursor = connection.cursor()
 
     cursor.execute("CREATE TABLE IF NOT EXISTS lists (id_list INTEGER PRIMARY KEY, id_user INTEGER NOT NULL, name TEXT NOT NULL, master_id INTEGER NOT NULL)") # CHAT_ID will be used as ID for the user
-    cursor.execute("CREATE TABLE IF NOT EXISTS todo (id_todo INTEGER PRIMARY KEY, id_list INTEGER NOT NULL, name TEXT NOT NULL, description TEXT, state BOOLEAN NOT NULL)") #DA INSERIRE DATE
+    cursor.execute("CREATE TABLE IF NOT EXISTS todos (id_todo INTEGER PRIMARY KEY, id_list INTEGER NOT NULL, name TEXT NOT NULL, description TEXT, state BOOLEAN NOT NULL)") #DA INSERIRE DATE
 
     connection.commit()
     connection.close()
@@ -21,7 +21,7 @@ def insert(table,values): #DA VALUTARE UTILIZZO DI UN ARRAY PER VALUES
     connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
 
-    print("INSERT INTO "+table+" VALUES "+values)
+    logger.toConsole("INSERT INTO "+table+" VALUES "+values)
     cursor.execute("INSERT INTO "+table+" VALUES "+values)
 
     connection.commit()
@@ -73,7 +73,7 @@ def get_list_todos(id_list):
     connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
 
-    cursor.execute("SELECT name,id_todo FROM todo WHERE id_list = '"+str(id_list)+"'") # get list`s slave todos
+    cursor.execute("SELECT name,id_todo FROM todos WHERE id_list = '"+str(id_list)+"'") # get list`s slave todos
     rows = cursor.fetchall()
     
     connection.close()
@@ -81,7 +81,7 @@ def get_list_todos(id_list):
     return rows # return rows
 
 def new_todo(name,id_list):
-    insert("todo"+" (id_list,name,state)",f"({id_list},\"{name}\",FALSE)")
+    insert("todos"+" (id_list,name,state)",f"({id_list},\"{name}\",FALSE)")
 
 def test_output():
 
